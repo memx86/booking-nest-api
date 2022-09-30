@@ -6,19 +6,20 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 
-  name       String
-  email      String      @unique
-  password   String
+  name         String
+  email        String  @unique
+  password     String
+  refreshToken String?
+
   phone      String?     @default("Not specified")
   apartments Apartment[]
   orders     Order[]
@@ -29,15 +30,15 @@ model User {
 model Apartment {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 
   title    String
   descr    String
   imgUrl   String
   price    Int
   rating   Int?
-  location City    @relation(fields: [cityId], references: [id])
-  owner    User    @relation(fields: [userId], references: [id])
+  location City    @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  owner    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   orders   Order[]
   userId   Int
   cityId   Int
@@ -48,9 +49,9 @@ model Apartment {
 model Order {
   id          Int       @id @default(autoincrement())
   date        DateTime  @default(now())
-  apartment   Apartment @relation(fields: [apartmentId], references: [id])
+  apartment   Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
   apartmentId Int
-  owner       User      @relation(fields: [userId], references: [id])
+  owner       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
 
   @@map("orders")
