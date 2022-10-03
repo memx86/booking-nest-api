@@ -6,14 +6,19 @@ import { OrderDto } from './dto';
 @Injectable()
 export class OrderService {
   constructor(private prisma: PrismaService) {}
+
   async getAll(userId: number) {
     const orders = await this.prisma.order.findMany({
       where: {
         userId,
       },
+      include: {
+        apartment: true,
+      },
     });
     return orders;
   }
+
   async create(userId: number, dto: OrderDto) {
     const order = await this.prisma.order.create({
       data: {
@@ -23,6 +28,7 @@ export class OrderService {
     });
     return order;
   }
+
   async deleteById(userId: number, orderId: number) {
     const order = await this.prisma.order.findUnique({
       where: {
