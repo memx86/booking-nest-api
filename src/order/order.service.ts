@@ -13,7 +13,11 @@ export class OrderService {
         userId,
       },
       include: {
-        apartment: true,
+        apartment: {
+          include: {
+            location: true,
+          },
+        },
       },
     });
     return orders;
