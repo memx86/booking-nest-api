@@ -23,6 +23,7 @@ model User {
   phone      String?     @default("Not specified")
   apartments Apartment[]
   orders     Order[]
+  reviews    Review[]
 
   @@map("users")
 }
@@ -36,12 +37,12 @@ model Apartment {
   descr    String
   imgUrl   String
   price    Int
-  rating   Int?
-  location City    @relation(fields: [cityId], references: [id], onDelete: Cascade)
-  owner    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  orders   Order[]
   userId   Int
   cityId   Int
+  owner    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  location City     @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  orders   Order[]
+  reviews  Review[]
 
   @@map("apartments")
 }
@@ -49,10 +50,10 @@ model Apartment {
 model Order {
   id          Int       @id @default(autoincrement())
   date        DateTime  @default(now())
-  apartment   Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
   apartmentId Int
-  owner       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
+  apartment   Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+  owner       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("orders")
 }
@@ -63,4 +64,16 @@ model City {
   apartments Apartment[]
 
   @@map("cities")
+}
+
+model Review {
+  id          Int       @id @default(autoincrement())
+  content     String
+  rating      Int
+  userId      Int
+  apartmentId Int
+  owner       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apartment   Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
 }
