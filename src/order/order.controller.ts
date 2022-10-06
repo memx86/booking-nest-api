@@ -15,12 +15,18 @@ import {
   ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
+  ApiBadRequestResponse,
+  ApiNotFoundResponse,
 } from '@nestjs/swagger';
 import { GetUserId } from '../auth/decorators';
 import { OrderDto } from './dto';
 import { OrderService } from './order.service';
 import { OrderExtendedResponse, OrderResponse } from './responses';
 
+@ApiUnauthorizedResponse({
+  description: 'Unauthorized',
+})
 @ApiBearerAuth()
 @ApiTags('orders')
 @Controller('orders')
@@ -36,6 +42,9 @@ export class OrderController {
     return this.OrderService.getAll(userId);
   }
 
+  @ApiBadRequestResponse({
+    description: 'Bad request',
+  })
   @ApiCreatedResponse({
     description: 'Order added',
     type: OrderResponse,
@@ -45,6 +54,9 @@ export class OrderController {
     return this.OrderService.create(userId, dto);
   }
 
+  @ApiNotFoundResponse({
+    description: 'Not found',
+  })
   @ApiNoContentResponse({
     description: 'Order deleted',
   })

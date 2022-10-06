@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { domainToASCII } from 'url';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ApartmentDto, ReviewDto } from './dto';
 
@@ -51,7 +50,7 @@ export class ApartmentService {
       },
     });
 
-    if (!apartment) return {};
+    if (!apartment) throw new NotFoundException('Apartment not found');
     const rating = this.calculateRating(apartment.reviews);
 
     return { ...apartment, rating };

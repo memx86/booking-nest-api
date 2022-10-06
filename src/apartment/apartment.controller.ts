@@ -7,10 +7,13 @@ import {
   Body,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { GetUserId } from '../auth/decorators';
 import { Public } from '../helpers/decorators';
@@ -38,6 +41,9 @@ export class ApartmentController {
     return this.ApartmentService.getAll();
   }
 
+  @ApiNotFoundResponse({
+    description: 'Apartment not found',
+  })
   @ApiOkResponse({
     description: 'Apartment data',
     type: ApartmentExtendedResponse,
@@ -48,6 +54,12 @@ export class ApartmentController {
     return this.ApartmentService.getById(apartmentId);
   }
 
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request',
+  })
   @ApiCreatedResponse({
     description: 'Apartment added',
     type: ApartmentResponse,
@@ -58,6 +70,12 @@ export class ApartmentController {
     return this.ApartmentService.create(userId, dto);
   }
 
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request',
+  })
   @ApiCreatedResponse({
     description: 'Review added',
     type: ReviewResponse,

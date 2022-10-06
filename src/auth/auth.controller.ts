@@ -8,11 +8,14 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { Public } from '../helpers/decorators';
@@ -32,6 +35,12 @@ import {
 export class AuthController {
   constructor(private AuthService: AuthService) {}
 
+  @ApiConflictResponse({
+    description: 'Credentials taken',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request',
+  })
   @ApiCreatedResponse({
     description: 'Registration successfull',
     type: UserWithTokensResponse,
@@ -42,6 +51,12 @@ export class AuthController {
     return this.AuthService.register(dto);
   }
 
+  @ApiUnauthorizedResponse({
+    description: 'Email or password is wrong',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request',
+  })
   @ApiOkResponse({
     description: 'Login successfull',
     type: UserWithTokensResponse,
@@ -53,6 +68,9 @@ export class AuthController {
     return this.AuthService.login(dto);
   }
 
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+  })
   @ApiOkResponse({
     description: 'Current user returned',
     type: UserResponse,
@@ -64,6 +82,9 @@ export class AuthController {
     return user;
   }
 
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+  })
   @ApiOkResponse({
     description: 'Refreshed successfully',
     type: TokensResponse,
@@ -81,6 +102,9 @@ export class AuthController {
     return this.AuthService.refresh({ userId, email, refreshToken });
   }
 
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+  })
   @ApiNoContentResponse({
     description: 'Logout successfull',
   })

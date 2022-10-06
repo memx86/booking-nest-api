@@ -1,9 +1,11 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Public } from '../helpers/decorators';
 import { CityService } from './city.service';
@@ -25,6 +27,10 @@ export class CityController {
     return this.CityService.getAll();
   }
 
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiBadRequestResponse({
+    description: 'Bad request',
+  })
   @ApiCreatedResponse({
     description: 'City added',
     type: CityWithIdResponse,
