@@ -31,6 +31,13 @@ export class ApartmentService {
         id: apartmentId,
       },
       include: {
+        owner: {
+          select: {
+            name: true,
+            email: true,
+            phone: true,
+          },
+        },
         reviews: {
           include: {
             owner: {

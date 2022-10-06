@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CityResponse } from '../../city/responses/city.response';
+import { OwnerFilteredResponse } from './owner-filtered.response';
 import { ReviewExtendedResponse } from './review-extended.response';
 
 export class ApartmentExtendedResponse {
@@ -32,6 +33,11 @@ export class ApartmentExtendedResponse {
     type: Number,
   })
   userId: number;
+
+  @ApiProperty({
+    type: OwnerFilteredResponse,
+  })
+  owner: object;
 
   @ApiProperty({
     type: CityResponse,
