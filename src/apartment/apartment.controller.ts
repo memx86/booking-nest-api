@@ -6,7 +6,12 @@ import {
   Post,
   Body,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GetUserId } from '../auth/decorators';
 import { Public } from '../helpers/decorators';
 import { ApartmentService } from './apartment.service';
@@ -47,6 +52,7 @@ export class ApartmentController {
     description: 'Apartment added',
     type: ApartmentResponse,
   })
+  @ApiBearerAuth()
   @Post()
   create(@GetUserId() userId: number, @Body() dto: ApartmentDto) {
     return this.ApartmentService.create(userId, dto);
@@ -56,6 +62,7 @@ export class ApartmentController {
     description: 'Review added',
     type: ReviewResponse,
   })
+  @ApiBearerAuth()
   @Post(':id/review')
   createReview(
     @GetUserId() userId: number,

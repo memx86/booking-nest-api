@@ -1,5 +1,10 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Public } from '../helpers/decorators';
 import { CityService } from './city.service';
 import { CityDto } from './dto';
@@ -24,6 +29,7 @@ export class CityController {
     description: 'City added',
     type: CityWithIdResponse,
   })
+  @ApiBearerAuth()
   @Post()
   create(@Body() dto: CityDto) {
     return this.CityService.create(dto);

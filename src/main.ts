@@ -12,6 +12,7 @@ async function bootstrap() {
     .setTitle('Booking API')
     .setDescription('Booking API using NestJS')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('', app, document);

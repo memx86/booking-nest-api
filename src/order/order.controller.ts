@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -29,6 +30,7 @@ export class OrderController {
     description: "Array of user's oredrs",
     type: [OrderExtendedResponse],
   })
+  @ApiBearerAuth()
   @Get()
   getAll(@GetUserId() userId: number) {
     return this.OrderService.getAll(userId);
@@ -38,6 +40,7 @@ export class OrderController {
     description: 'Order added',
     type: OrderResponse,
   })
+  @ApiBearerAuth()
   @Post()
   create(@GetUserId() userId: number, @Body() dto: OrderDto) {
     return this.OrderService.create(userId, dto);
@@ -46,6 +49,7 @@ export class OrderController {
   @ApiNoContentResponse({
     description: 'Order deleted',
   })
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   deleteById(

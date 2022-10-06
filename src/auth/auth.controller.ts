@@ -8,6 +8,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -56,6 +57,7 @@ export class AuthController {
     description: 'Current user returned',
     type: UserResponse,
   })
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   @Get('current')
   current(@GetUser() user: User) {
@@ -66,6 +68,7 @@ export class AuthController {
     description: 'Refreshed successfully',
     type: TokensResponse,
   })
+  @ApiBearerAuth()
   @Public()
   @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshGuard)
@@ -81,6 +84,7 @@ export class AuthController {
   @ApiNoContentResponse({
     description: 'Logout successfull',
   })
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('logout')
   logout(@GetUserId() userId: number) {
